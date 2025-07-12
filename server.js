@@ -2,7 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const { USERS_LIST_BD } = require('./utils/users-list-bd');
-const { JWT_TOKEN } = require('./utils/jwt-manager');
+const { JWT_TOKEN, validateToken } = require('./utils/jwt-manager');
 
 const app = express();
 const PORT = 3000;
@@ -29,8 +29,17 @@ app.post('/login', (req, res) => {
     message: 'Login successful',
     token: TOKEN
   });
-
 })
+
+app.post('/validate-token', (req, res) => {
+  const authHeader = req.headers['authorization'];
+
+  const validToken = validateToken(authHeader);
+  console.log('Token validation result:', validToken);
+  
+  res.json({});
+})
+
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
