@@ -10,6 +10,20 @@ const JWT_TOKEN = (username) => {
     );
 }
 
+const validateToken = (token) => {
+    try {
+        if (!token) {
+            throw new Error('Empty token provided');
+        }
+        jwt.verify(token, JWT_SECRET);
+        return true;
+    } catch (error) {
+        console.error('Token validation error:', error);
+        return false;
+    }
+}
+
 module.exports = {
-    JWT_TOKEN
+    JWT_TOKEN,
+    validateToken
 }
