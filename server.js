@@ -35,6 +35,7 @@ app.post('/login', (req, res) => {
 app.post('/validate-token', authToken, (req, res) => {
   res.json({
     message: 'Token valid',
+    username: req.username
   });
 })
 
