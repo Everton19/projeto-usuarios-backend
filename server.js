@@ -39,6 +39,35 @@ app.post('/validate-token', authToken, (req, res) => {
   });
 })
 
+app.put('/update-user', authToken, (req, res) => {
+  const NEW_USER_INFO = req.body;
+
+  const { username, name, email, password } = NEW_USER_INFO;
+
+  if (!username || !name || !email || !password) {
+    return res.status(400).json({
+      message: 'All fields are required'
+    });
+  }
+ 
+  const USER_FOUND = USERS_LIST_BD.find(user => user.username === req.username);
+
+  if (!USER_FOUND) {
+    return res.status(403).json({
+      message: 'User not found'
+    });
+  }
+
+  USERS_LIST_BD[USER_FOUND] = NEW_USER_INFO;
+
+  const TOKEN = JWT_TOKEN(username);
+
+  return res.json({
+    message: 'User updated successfully',
+    token: TOKEN
+  });
+})
+
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
