@@ -50,9 +50,9 @@ app.put('/update-user', authToken, (req, res) => {
     });
   }
  
-  const USER_FOUND = USERS_LIST_BD.find(user => user.username === req.username);
+  const USER_FOUND = USERS_LIST_BD.findIndex(user => user.username === req.username);
 
-  if (!USER_FOUND) {
+  if (USER_FOUND === -1) {
     return res.status(403).json({
       message: 'User not found'
     });
