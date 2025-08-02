@@ -10,13 +10,15 @@ const authToken = (req, res, next) => {
     });
   }
 
-  const TOKEN_IS_VALID = validateToken(token);
+  const TOKEN_DECODED = validateToken(token);
 
-  if (!TOKEN_IS_VALID) {
+  if (!TOKEN_DECODED) {
     return res.status(403).json({
       message: 'Invalid token'
     });
   }
+
+  req.username = TOKEN_DECODED.username;
 
   next();
 }
