@@ -39,6 +39,32 @@ app.post('/validate-token', authToken, (req, res) => {
   });
 })
 
+app.post('/create-user', authToken, (req, res) => {
+  const USER_INFO = req.body;
+
+  const { username, name, email, password } = USER_INFO;
+
+  if (!username || !name || !email || !password) {
+    return res.status(400).json({
+      message: 'All fields are required'
+    });
+  }
+
+  const USER_FOUND = USERS_LIST_BD.find(user => user.username === username);
+
+  if (USER_FOUND) {
+    return res.status(409).json({
+      message: 'User already exists'
+    });
+  }
+
+  USERS_LIST_BD.push(USER_INFO);
+
+  return res.status(201).json({
+    message: 'User created successfully'
+  });
+})
+
 app.put('/update-user', authToken, (req, res) => {
   const NEW_USER_INFO = req.body;
 
